@@ -31,7 +31,7 @@ center_idx = 0  # add center index in pdb molecule
 c = pdb.atoms.positions[center_idx]
 
 add_vec = []
-for i in range(1, pdb.atoms.number):
+for i in range(1, pdb.atoms.number): # only H
     v = pdb.atoms.positions[i] - c
     add_vec.append(v)
 
@@ -44,12 +44,11 @@ for i in range(rmc.nmol_types):
         # add atom rmc index
         if i == add_nmol_types-1:
             m = rmc_util.uniform_random_rotate_matrix()
-            pos = np.dot(v, mat)
-            #print(i, v)
+            pos = np.dot(v, mat)  # Oxygen position
+            
             for j in range(len(add_vec)):
                 
-                add_pos = pos + np.dot(add_vec[j], m)
-                #print(np.linalg.norm(add_pos))
+                add_pos = pos + np.dot(add_vec[j], m)  # new H2O position                
                 add_atoms.append(add_pos)
                 
     ni = ni + rmc.ni[i]
