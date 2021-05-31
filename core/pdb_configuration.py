@@ -8,7 +8,7 @@ Created on Wed May  5 14:52:24 2021
 import sys
 import os
 import numpy as np
-import atoms
+import core.atoms
 
 class PdbConfiguration(object):
     
@@ -42,7 +42,7 @@ class PdbConfiguration(object):
                                 
                     line = f.readline()
                 
-                self.atoms = atoms.Atoms(positions, elems)
+                self.atoms = core.atoms.Atoms(positions, elems)
                 
         except IOError:
             raise

@@ -5,12 +5,11 @@ Created on Tue May  4 12:04:13 2021
 @author: H.Morita
 """
 
-import rmc_configuration as rmc_cfg
-import pdb_configuration as pdb_cfg
-import rmc_util
+import core.rmc_configuration as rmc_cfg
+import core.pdb_configuration as pdb_cfg
+import utils.rmc_util as rmc_util
 import numpy as np
 
-'''
 
 def rmc2xyz(rmc, atoms, path, title, elec):
     with open(path, mode='w') as f:
@@ -35,15 +34,15 @@ def rmc2xyz(rmc, atoms, path, title, elec):
 rmc = rmc_cfg.RmcConfiguration()
 rmc.read('./sio2_h2o_md.cfg')
 
-rmc2xyz(rmc, ["Si", "Si", "O", "O"], "./sio2.xyz", "SiO2", 0.0)
-rmc2xyz(rmc, ["Si", "Si", "O", "S"], "./sios.xyz", "SiO2", 0.0)
+#rmc2xyz(rmc, ["Si", "Si", "O", "O"], "./sio2.xyz", "SiO2", 0.0)
+#rmc2xyz(rmc, ["Si", "Si", "O", "S"], "./sios.xyz", "SiO2", 0.0)
 
 mat = rmc.vectors          # cell matrix
 imat = np.linalg.inv(mat)  # cell matrix inverse
 
 add_nmol_types = 4
 
-pdb_path = 'H2O.pdb'
+pdb_path = './H2O.pdb'
 pdb = pdb_cfg.PdbConfiguration()
 pdb.read(pdb_path)
 center_idx = 0  # add center index in pdb molecule
@@ -100,4 +99,3 @@ rmc.sites.append([np.array([0., 0., 0.])])
 rmc.write("./sio2_add_h2o_md.cfg")
 
 rmc2xyz(rmc, ["Si", "Si", "O", "O", "H"], "./sio2_h2o.xyz", "SiO2H", 0.0)
-'''
