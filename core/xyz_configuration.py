@@ -17,6 +17,7 @@ class XyzConfiguration(object):
     def __init__(self):
         
         self.atoms = None
+        self.vectors = None
         
     def convert(self, rmc, elem):
         
@@ -24,7 +25,8 @@ class XyzConfiguration(object):
         positions = []   
         elems = []
         
-        
+        self.vectors = rmc.vectors * 2.
+                
         nmol = 0
         for i in range(rmc.nmol_types):
             for ni in range(rmc.ni[i]):
