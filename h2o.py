@@ -9,27 +9,8 @@ import core.rmc_configuration as rmc_cfg
 import core.pdb_configuration as pdb_cfg
 import utils.rmc_util as rmc_util
 import numpy as np
+import tools.rmc2xyz as trmc
 
-
-def rmc2xyz(rmc, atoms, path, title, elec):
-    with open(path, mode='w') as f:
-        
-        f.write("{}\n".format(rmc.nmol))
-        f.write(title)
-        f.write("{:10.06f}\n".format(elec))
-        
-        ni = 0
-        for i in range(rmc.nmol_types):
-            for n in range(ni, ni + rmc.ni[i]):
-                f.write(atoms[i])
-                v = rmc.atoms.positions[n]
-                pos = np.dot(v, rmc.vectors)
-                f.write(" {:8.04f}".format(pos[0]))
-                f.write(" {:8.04f}".format(pos[1]))
-                f.write(" {:8.04f}\n".format(pos[2]))
-                    
-            ni = ni + rmc.ni[i]
-        
 
 rmc = rmc_cfg.RmcConfiguration()
 rmc.read('./sio2_h2o_md.cfg')
@@ -58,8 +39,7 @@ add_atoms = []
 ni = 0
 for i in range(rmc.nmol_types):
     for n in range(ni, ni+rmc.ni[i]):
-        v = rmc.atoms.positions[n]
-        #pos = np.dot(v, mat)
+        v = rmc.atoms.positions[n]        
         
         # add atom rmc index
         if i == add_nmol_types-1:
@@ -98,4 +78,4 @@ rmc.sites.append([np.array([0., 0., 0.])])
 
 rmc.write("./sio2_add_h2o_md.cfg")
 
-rmc2xyz(rmc, ["Si", "Si", "O", "O", "H"], "./sio2_h2o.xyz", "SiO2H", 0.0)
+trmc.rmc2xyz(rmc, ["Si", "Si", "O", "O", "H"], "./sio2_h2o.xyz", "SiO2H", 0.0)
