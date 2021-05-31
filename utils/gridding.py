@@ -5,7 +5,7 @@ Created on Sat May  8 13:34:31 2021
 @author: H.Morita
 """
 
-import rmc_configuration as rmc_cfg
+import core.rmc_configuration as rmc_cfg
 import numpy as np
 
 class Gridding(object):
