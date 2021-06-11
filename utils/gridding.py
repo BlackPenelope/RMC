@@ -96,7 +96,7 @@ class Gridding(object):
         
 
     def neighbours(self,ic,rmax,n1,n2):
-        
+                
         """
         Finds neighbours. Returns coords in terms of unit cell vectors
         and d (distance) in real units.
