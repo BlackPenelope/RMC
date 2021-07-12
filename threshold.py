@@ -7,7 +7,17 @@ Created on Mon Jul 12 14:15:52 2021
 
 import numpy as np
 from pyevtk.hl import gridToVTK
+import core.rmc_configuration as rmc_cfg
+from tools.rmc2xyz import rmc2xyz
 
+rmc = rmc_cfg.RmcConfiguration()
+rmc.read('./sample/rsn100.cfg')
+
+rmc2xyz(rmc, ["Na", "Si", "O"], "./na2o-sio2.xyz", "22.7Na2O-77.3SiO2", 0.0)
+
+
+
+'''
 ix = 128
 jx = 128
 kx = 128
@@ -42,3 +52,4 @@ rr = (xx-x0)**2+(yy-y0)**2+(zz-z0)**2
 qq = amp*np.exp(-rr/(2.*ds*2))
 
 gridToVTK('./test',x,y,z,pointData={'quantity':qq})
+'''
