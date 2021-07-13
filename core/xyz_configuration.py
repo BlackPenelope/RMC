@@ -18,6 +18,7 @@ class XyzConfiguration(object):
         
         self.atoms = None
         self.vectors = None
+        self.path = None
         
     def convert(self, rmc, elem):
         
@@ -32,14 +33,46 @@ class XyzConfiguration(object):
             for ni in range(rmc.ni[i]):
                 n = nmol + ni
                 v = rmc.atoms.positions[n]
-                pos = np.dot(v, mat)
-                #print(pos)
+                pos = np.dot(v, mat)                
                 positions.append(pos)
                 elems.append(elem[i])
                 
             nmol = nmol + rmc.ni[i]
         
-        self.atoms = core.atoms.Atoms(positions, elems)        
+        self.atoms = core.atoms.Atoms(positions, elems)
+        
+    def read(self, path):
+        self.path = path
+        
+        try:
+            positions = []
+            elems = []
+            with open(self.path.encode("utf-8"), "r") as f:
+                
+                line = f.readline()
+                n = int(line)
+                line = f.readline()
+                items = line.split()
+                self.title = items[0]
+                self.elec = items[-1]
+                
+                for i in range(n):
+                    line = f.readline()
+                    items = line.split()
+                    elem = items[0]
+                    x = items[1]
+                    y = items[2]
+                    z = items[3]
+                    position = np.array([float(x), float(y), float(z)])
+                    positions.append(position)
+                    elems.append(elem)
+                
+            self.atoms = core.atoms.Atoms(positions, elems)
+                
+        except Exception as e:
+            print(e)
+            pass
+        
 
     def write(self, path, title, elec):
                         
@@ -59,8 +92,13 @@ class XyzConfiguration(object):
 
 
 if __name__ == '__main__':
-    rmc = rmc_cfg.RmcConfiguration()
-    rmc.read("../sio2_h2o_md.cfg")
+    
     xyz = XyzConfiguration()
-    xyz.convert(rmc, ['Si', 'Si', 'O', 'O'])
-    xyz.write('../a.xyz', 'convert', 0.0)
+    xyz.read('../sio2.xyz')
+    
+    
+    #rmc = rmc_cfg.RmcConfiguration()
+    #rmc.read("../sio2_h2o_md.cfg")
+    #xyz = XyzConfiguration()
+    #xyz.convert(rmc, ['Si', 'Si', 'O', 'O'])
+    #xyz.write('../a.xyz', 'convert', 0.0)
