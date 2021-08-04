@@ -10,12 +10,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from gui import main_window
 
-#main_window.aaa()
-
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    w = QtWidgets.QWidget()
-    w.show()
+    window = main_window.MainWindow()    
+    #w = QtWidgets.QWidget()
+    #w.show()
     sys.exit(app.exec())
 
 if __name__ == '__main__':
