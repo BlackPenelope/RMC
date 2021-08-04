@@ -5,3 +5,5 @@ Created on Wed Aug  4 15:31:45 2021
 @author: Morita-T1700
 """
 
+if __name__ == '__main__':
+    pass
