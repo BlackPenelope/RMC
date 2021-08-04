@@ -23,3 +23,15 @@ class MainWindow(QtWidgets.QMainWindow):
         
         self.show()
         
+        
+class CentralWidget(QtWidgets.QWidget):
+    """
+    Central Widget at Main Window
+    
+    Attributes
+    ----------
+    
+    """
+    def __init__(self):
+        super().__init__()
+        
