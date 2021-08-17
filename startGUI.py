@@ -12,7 +12,7 @@ from gui import main_window
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    window = main_window.MainWindow()    
+    window = main_window.MainWindow()
     #w = QtWidgets.QWidget()
     #w.show()
     sys.exit(app.exec())
