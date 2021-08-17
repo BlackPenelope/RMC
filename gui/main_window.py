@@ -6,6 +6,7 @@ Created on Wed Aug  4 15:34:21 2021
 """
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from gui.gl_stack import GLStack
 
 class MainWindow(QtWidgets.QMainWindow):
     """
@@ -13,17 +14,17 @@ class MainWindow(QtWidgets.QMainWindow):
     
     Attributes
     ----------
-    fruit_id : int
-        対象の果物のマスタID。
+    center : CentralWidget
+        Central Widget
     fruit_name : str
         果物名。
     """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
         
-        #self.center = CentralWidget(self)
-        # 7
-        #self.setCentralWidget(self.center)
+        self.center = CentralWidget(self)
+        
+        self.setCentralWidget(self.center)
                 
         self.statusBar().showMessage('RMC')
         
@@ -38,8 +39,23 @@ class CentralWidget(QtWidgets.QWidget):
     
     Attributes
     ----------
+    gl_stack : GLStack
+        OpenGL Graphics Widget
     
     """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent):
+        super().__init__(parent)
         
+        self.init_gui()
+        
+    def init_gui(self):
+                
+        self.gl_stack = GLStack(self)
+        self.combo = QtWidgets.QComboBox()
+        
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(self.gl_stack)
+        layout.addWidget(self.combo)
+
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.setLayout(layout)
