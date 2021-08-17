@@ -22,7 +22,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super().__init__()
         
         #self.center = CentralWidget(self)
-        # 6
+        # 7
         #self.setCentralWidget(self.center)
                 
         self.statusBar().showMessage('RMC')
