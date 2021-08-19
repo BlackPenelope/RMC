@@ -2,7 +2,7 @@ import os
 import sys
 import math
 import numpy as np
-from rmc_configuration import RmcConfiguration
+from core.rmc_configuration import RmcConfiguration
 
 def calc_histogram(cfg, dr):
 
