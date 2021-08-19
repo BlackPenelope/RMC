@@ -1,0 +1,25 @@
+SiO2 network (Fit to neutron F(Q))
+0.0657    		! number density
+2.35 1.40
+     2.35		! cut offs
+0.05 0.05 		! maximum move
+0.1			! r spacing
+.false.		        ! whether to use moveout option
+0			! number of configurations to collect
+9000			! step for printing
+60 10     		! Time limit, step for saving
+0 1 0 0			! No. of g(r), neutron, X-ray, EXAFS expts
+sio2_neutron.cfq
+1 220			! Range of points used
+0.			! Constant
+.0191 .1069
+      .1499		! Coefficients
+0.005			! Standard deviation
+.false.			! whether to renormalise
+.true.                  ! offset
+3			! no. of coordination constraints
+1 2 0.  1.8  4 1. 0.00001
+2 1 0.  1.8  2 1. 0.00001
+1 2 1.8 2.2 0 1. 0.0001
+0			! no. of average coordination constraints
+.false.			! whether to use a potential
