@@ -16,9 +16,14 @@ h2o = np.array([[0.000,0.000,0.000],
 
 oh = h2o[1] - h2o[0]
 hh = h2o[2] - h2o[1]
-#print(np.linalg.norm(oh))
-#print(np.linalg.norm(hh))
-#sys.exit()
+
+hlx = 10.680965
+hly = 10.680965
+hlz = 10.680965
+lx = 2*hlx
+ly = 2*hly
+lz = 2*hlz
+cell = [lx, ly, lz]
 
 o = np.array([ 4.85654934,10.43352976,7.10982708])
 
@@ -35,6 +40,23 @@ si = np.array([[ 4.48096388, 9.12741864, 6.43090222],
                [ 5.92752970,-8.03353829,-10.65191278],
                [ 8.70616138, 9.7779535 , 9.88433591],
                [ 9.41191682, 8.58510332, 7.06849174]])
+
+for p in si:
+    d = p - o
+    if (d[0] > hlx): p[0] = p[0] - lx
+    if (d[0] <-hlx): p[0] = p[0] + lx
+    if (d[1] > hly): p[1] = p[1] - ly
+    if (d[1] <-hly): p[1] = p[1] + ly
+    if (d[2] > hlz): p[2] = p[2] - lz
+    if (d[2] <-hlz): p[2] = p[2] + lz
+    '''
+    x = d[0] - lx*int(d[0]/hlx)
+    y = d[1] - ly*int(d[1]/hly)
+    z = d[2] - lz*int(d[2]/hlz)
+    '''
+    #print(p)
+
+#sys.exit()
 
 def func(x,o,si):
     
