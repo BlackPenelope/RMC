@@ -9,6 +9,7 @@ import numpy as np
 import os
 import os.path
 import sys
+import math
 
 class RmcConfiguration(object):
     """
@@ -26,7 +27,7 @@ class RmcConfiguration(object):
             self.number = self.positions.shape[0]
             self.elements = np.array(elements, dtype="|S4", copy=False)
     
-    def __init__(self, path=None):
+    def __init__(self):
         self.header = ""
         self.title = ""
         self.ngen = 0
@@ -45,7 +46,7 @@ class RmcConfiguration(object):
         self._metric = None
         self.file_name = ""
         self.atoms = None
-        self.path = path
+        #self.path = path
         #f = open(self.path, "r")
         #f.close()
 
@@ -62,8 +63,60 @@ class RmcConfiguration(object):
 
         return self._metric
 
+    @property
+    def volume(self):
+        triprod = self.vectors[0][0]*self.vectors[1][1]*self.vectors[2][2] \
+                + self.vectors[1][0]*self.vectors[2][1]*self.vectors[0][2] \
+                + self.vectors[2][0]*self.vectors[0][1]*self.vectors[1][2] \
+                - self.vectors[2][0]*self.vectors[1][1]*self.vectors[0][2] \
+                - self.vectors[1][0]*self.vectors[0][1]*self.vectors[2][2] \
+                - self.vectors[0][0]*self.vectors[2][1]*self.vectors[1][2]
+        self._volume = 8.0*abs(triprod)
+        if(self.truncated == True):
+            self._volume = self._volume/2.0
+
+        return self._volume
+    
+    @property
+    def d(self):
+        triprod = self.vectors[0][0]*self.vectors[1][1]*self.vectors[2][2] \
+                + self.vectors[1][0]*self.vectors[2][1]*self.vectors[0][2] \
+                + self.vectors[2][0]*self.vectors[0][1]*self.vectors[1][2] \
+                - self.vectors[2][0]*self.vectors[1][1]*self.vectors[0][2] \
+                - self.vectors[1][0]*self.vectors[0][1]*self.vectors[2][2] \
+                - self.vectors[0][0]*self.vectors[2][1]*self.vectors[1][2]
+
+        axb1=self.vectors[1][0]*self.vectors[2][1]-self.vectors[2][0]*self.vectors[1][1]
+        axb2=self.vectors[2][0]*self.vectors[0][1]-self.vectors[0][0]*self.vectors[2][1]
+        axb3=self.vectors[0][0]*self.vectors[1][1]-self.vectors[1][0]*self.vectors[0][1]
+        bxc1=self.vectors[1][1]*self.vectors[2][2]-self.vectors[2][1]*self.vectors[1][2]
+        bxc2=self.vectors[2][1]*self.vectors[0][2]-self.vectors[0][1]*self.vectors[2][2]
+        bxc3=self.vectors[0][1]*self.vectors[1][2]-self.vectors[1][1]*self.vectors[0][2]
+        cxa1=self.vectors[1][2]*self.vectors[2][0]-self.vectors[2][2]*self.vectors[1][0]
+        cxa2=self.vectors[2][2]*self.vectors[0][0]-self.vectors[0][2]*self.vectors[2][0]
+        cxa3=self.vectors[0][2]*self.vectors[1][0]-self.vectors[1][2]*self.vectors[0][0]
+        d1 = triprod/math.sqrt(axb1**2+axb2**2+axb3**2)
+        d2 = triprod/math.sqrt(bxc1**2+bxc2**2+bxc3**2)
+        d3 = triprod/math.sqrt(cxa1**2+cxa2**2+cxa3**2)
+        _d = min(d1,d2,d3)
+        
+        if (self.truncated):
+            
+            d1 = 1.5*triprod/math.sqrt( \
+                (axb1+bxc1+cxa1)**2+(axb2+bxc2+cxa2)**2+(axb3+bxc3+cxa3)**2)
+            d2 = 1.5*triprod/math.sqrt( \
+                (axb1-bxc1+cxa1)**2+(axb2-bxc2+cxa2)**2+(axb3-bxc3+cxa3)**2)
+            d3 = 1.5*triprod/math.sqrt( \
+                (axb1+bxc1-cxa1)**2+(axb2+bxc2-cxa2)**2+(axb3+bxc3-cxa3)**2)
+            d4 = 1.5*triprod/math.sqrt( \
+                (axb1-bxc1-cxa1)**2+(axb2-bxc2-cxa2)**2+(axb3-bxc3-cxa3)**2)
+            _d = math.min(_d,d1,d2,d3,d4)
+        
+        return _d
+    
     def read(self, path):
-        self.path = path
+        
+        self.path = path        
         try:
             positions = []
             with open(self.path.encode("utf-8"), "r") as f:
