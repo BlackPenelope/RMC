@@ -1,10 +1,11 @@
 import os
 import math
 from core.rmc_configuration import RmcConfiguration
-from rmc_data import RmcData
-from calc_histogram import *
+from utils.rmc_data import RmcData
+from utils.calc_histogram import *
 import numpy as np
 import six
+
 try:
     import histogram.histogram as hist
     has_hist = True
